@@ -6,11 +6,14 @@ import (
 	"os"
 	"time"
 
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+
 	"github.com/dangdinh2405/auth-JWT-Golang/internal/data"
 	"github.com/dangdinh2405/auth-JWT-Golang/internal/http"
 	"github.com/dangdinh2405/auth-JWT-Golang/internal/store"
-	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
+	"github.com/dangdinh2405/auth-JWT-Golang/internal/middleware"
+
 )
 
 func main() {
@@ -37,6 +40,7 @@ func main() {
 	if dbName == "" {
 		dbName = "auth"
 	}
+	userCol := db.DB(dbName).Collection("users")
 	sessionsCol := db.DB(dbName).Collection("session")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -45,8 +49,11 @@ func main() {
 	if err := store.EnsureSessionIndexes(ctx, sessionsCol); err != nil {
 		log.Fatal(err)
 	}
-
+	
 	http.AuthRoutes(r, db, dbName)
+
+	r.Use(middleware.RequireAuth(userCol))
+	http.UserRoutes(r)
 
 	defer db.Close()
 

@@ -13,11 +13,12 @@ func AuthRoutes(r *gin.Engine, db *data.Mongo, dbName string) {
 
 	auth.POST("/signup", handler.SignUp(usersCol))
 	auth.POST("/signin", handler.SignIn(usersCol, sessCol))
+	auth.POST("/signout", handler.SignOut(sessCol))
+	auth.POST("/refresh", handler.RefreshToken(sessCol))
 }
 
-// func authRoutes(r *gin.Engine) {
-// 	auth := r.Group("/api/auth") 
+func UserRoutes(r *gin.Engine) {
+	user := r.Group("/users") 
 
-// 	auth.POST("/login", handler.Login)
-// 	auth.POST("/register", handler.Register)
-// }
+	user.GET("/me", handler.AuthMe())
+}
