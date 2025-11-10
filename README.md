@@ -1,26 +1,26 @@
 ## JWT Auth Backend (Go + MongoDB)
 
 # ✨ Features
-Signup / Signin (BCrypt password hashing)
-Access Token (short TTL) + Refresh Token (long TTL) with rotation
-Logout (server-side revoke refresh tokens)
-Protected routes via AuthRequired middleware
-Token storage: stateless access (JWT)
-Secure cookies (HttpOnly, Secure, SameSite=Strict/Lax)
-Rate-limit ready & CORS-safe defaults
+Signup / Signin (BCrypt password hashing)  
+Access Token (short TTL) + Refresh Token (long TTL) with rotation  
+Logout (server-side revoke refresh tokens)  
+Protected routes via AuthRequired middleware  
+Token storage: stateless access (JWT)  
+Secure cookies (HttpOnly, Secure, SameSite=Strict/Lax)  
+Rate-limit ready & CORS-safe defaults  
 
 # 🧱 Tech Stack
-Go 1.22+
-Gin (github.com/gin-gonic/gin)
-MongoDB Go Driver (go.mongodb.org/mongo-driver/mongo)
-JWT (github.com/golang-jwt/jwt/v5)
-BCrypt (golang.org/x/crypto/bcrypt)
+Go 1.22+  
+Gin (github.com/gin-gonic/gin)  
+MongoDB Go Driver (go.mongodb.org/mongo-driver/mongo)  
+JWT (github.com/golang-jwt/jwt/v5)  
+BCrypt (golang.org/x/crypto/bcrypt)  
 
 # 🔐 Token Strategy
-Access Token: TTL 15m (Bearer in Authorization header).
-Refresh Token: TTL 7–30d, rotated on every refresh; stored in cookie (HttpOnly) + DB record with jti, userId, expiresAt.
-Logout: delete the refresh record in DB (server-side revoke).
-Compromise handling: if a used refresh token’s jti is not found (or already rotated), revoke all tokens for that user session.
+Access Token: TTL 15m (Bearer in Authorization header).  
+Refresh Token: TTL 7–30d, rotated on every refresh; stored in cookie (HttpOnly) + DB record with jti, userId, expiresAt.  
+Logout: delete the refresh record in DB (server-side revoke).  
+Compromise handling: if a used refresh token’s jti is not found (or already rotated), revoke all tokens for that user session.  
 
 # ⚙️ Environment
 ```
